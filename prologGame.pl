@@ -87,7 +87,7 @@ run :-
 
 % s002 -> s010
 proceed :-
-  change_scene(s002, s010),
+  change_scene(s006, s010),
   nl,
   write("You continue walking up the mountain, considering the choices that led you to this predicament."), nl,
   write("The coldness has picked up as the night grows darker. You follow the road, hoping that"), nl,
@@ -95,10 +95,10 @@ proceed :-
   write("After half an hour trudging up the cold and dark mountain, you see headlights in the distance."), nl,
   write("You frantically wave your arms like a man possessed, and the car alights beside you."), nl,
   write("The driver rolls down the windows, and the man inside introduces himself."), nl, nl,
-  write("'Hey, my name is Kemper. Do you want a ride?'"), nl,
+  write("'Hey, my name is Kemper. Do you need a ride?'"), nl,
   write("A: yes_to_ride."), nl, %s011
   write("B: no_to_ride."), nl.
-  
+
 % s002 -> s007
 investigate :-
   change_scene(s002, s007),
