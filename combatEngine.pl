@@ -14,7 +14,6 @@ wolfHealth(3).
 encounter :-
 	\+ inCombat,
 	\+ gameover,
-	nl,
 	write("You lock eyes with the wolf as it snarls. You slowly kneel to the ground and grasp for something"), nl,
 	write("to fend it off with. You feel around in the cold snow and find a stick. You pick it up and continue"), nl,
 	write("to track the wolf with your eyes."), nl,
@@ -35,8 +34,9 @@ subHealth(wolf, D) :-
 	asserta(wolfHealth(NH)).
 
 endCombat :-
-	retract(inCombat).
-	% this is where we would return to the game
+	retract(inCombat),
+	\+ gameover,
+	end_investigate.
 
 
 % default end for each combat dialogue

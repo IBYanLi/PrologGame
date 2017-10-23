@@ -99,9 +99,23 @@ run_away :-
 investigate :-
   change_scene(s002, s007),
   nl,
-  write("Curiousity killed the cat. You die."), nl,
-  write("Game Over."),
-  asserta(gameover).
+  write("You walk slowly towards the bushes. As you get close, you can hear a low growl."), nl,
+  write("Suddenly, a large grey-haired animal leaps out of the tree-line, landing on the snow-covered asphalt."), nl,
+  nl,
+  change_scene(s007, c007),
+  encounter.
+
+end_investigate :-
+  change_scene(c007, s007),
+  write("You crawl, painfully, towards the concrete median that separates the two lanes of the highway."), nl,
+  write("You sit up against the median for a minute, catching your breath."), nl,
+  nl,
+  write("It seems you have a few options for what to do next."), nl,
+  write("A: call. (You need medical attention.)"), nl,
+  write("B: rest."), nl.
+
+
+
 
 % s006 -> s009
 call :-
@@ -115,6 +129,19 @@ call :-
   write("Game Over."), nl,
   asserta(gameover).
 
+% s007 -> s009
+call :-
+  change_scene(s007, s009),
+  nl,
+  write("You need to call an ambulance, or your brother, or someone. This night is quickly unfolding into madness."), nl,
+  nl,
+  write("You pull out your Samsung Note 7 to check for a signal again."), nl,
+  write("You smack your phone against your hand as the screen doesn't turn on in response to the power button."), nl,
+  write("Maybe it's too cold? You hit the phone a few times against the concrete barricade."), nl,
+  nl,
+  write("It's too much for the poor cellphone to handle. It explodes, and you die a fiery death."), nl,
+  write("Game Over."), nl,
+  asserta(gameover).
 
 % s001 -> s003
 stay :- 
