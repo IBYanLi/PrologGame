@@ -1,3 +1,5 @@
+:- consult(combatEngine).
+
 % Type game_start to begin your adventure!
 % Answer scenarios by typing the word in lowercase.
 
@@ -72,11 +74,11 @@ leave :-
   write("You hear the sound of something rustling in the bushes."), nl,
   write("Worried, you:"),nl,
   nl,
-  write('A: run.'),nl, % s006
+  write('A: run_away.'),nl, % s006
   write('B: investigate.'),nl. % s007
 
 % s002 -> s006
-run :- 
+run_away :- 
   change_scene(s002, s006),
   nl,
   write("You back away slowly from the bushes. As you turn to make a dash up the side of the road,"), nl,
