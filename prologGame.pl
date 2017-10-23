@@ -54,14 +54,7 @@ restart :-
   retract(scene(_)),
   asserta(scene(s001)),
   nl,
-  write("Your cousin Sam had invited you to over for Christmas."), nl,
-  write("His house is on a mountain above the city, and you planned to drive to his place."), nl,
-  write("Unfortunately, your car has broken down in the middle of the road."), nl,
-  write("With no one around you and no signal on your phone, you decide to leave your car."),nl,
-  nl,
-  write("It is getting late and snow is falling lightly. Do you stay in your car?"), nl,
-  write("A: leave."),nl, % s002
-  write("B: stay."),nl. % s003
+  game_start.
 
 % s001 -> s002
 leave :-
@@ -92,7 +85,20 @@ run :-
   write("A: proceed."), nl, % s008
   write("B: call. (and try your cell phone again)"), nl. % s009
 
-
+% s002 -> s010
+proceed :-
+  change_scene(s002, s010),
+  nl,
+  write("You continue walking up the mountain, considering the choices that led you to this predicament."), nl,
+  write("The coldness has picked up as the night grows darker. You follow the road, hoping that"), nl,
+  write("someone might drive by and pick up a hitchiker in need."), nl, nl,
+  write("After half an hour trudging up the cold and dark mountain, you see headlights in the distance."), nl,
+  write("You frantically wave your arms like a man possessed, and the car alights beside you."), nl,
+  write("The driver rolls down the windows, and the man inside introduces himself."), nl, nl,
+  write("'Hey, my name is Kemper. Do you want a ride?'"), nl,
+  write("A: yes_to_ride."), nl, %s011
+  write("B: no_to_ride."), nl.
+  
 % s002 -> s007
 investigate :-
   change_scene(s002, s007),
