@@ -150,7 +150,7 @@ run_away :-
   write("B: call. (and try your cell phone again)"), nl, % s009
   fail.
 
-% s002 -> s010
+% s006 -> s010
 proceed :-
   change_scene(s006, s010),
   nl,
