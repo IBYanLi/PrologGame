@@ -1,5 +1,6 @@
 :- consult(combatEngine).
 :- consult(sceneDirectory).
+:- consult(inventoryManager).
 
 % Type game_start to begin your adventure!
 % Answer scenarios by typing the word in lowercase.
@@ -193,7 +194,7 @@ correct_him :-
   write("He stares ahead at the road and replies, 'Jeffrey Dahmer. You can just call me Jeff.'"), nl, 
   write("'Nice, nice. Thanks again for the ride, Jeff.'"), nl, 
   write("The two of you continued along the road towards the darkness."), nl,
-  write("You were never seen at your cousins house that night, nor anywhere else again."), nl,
+  write("You were never seen at your cousin's house that night, nor anywhere else again."), nl,
   write("Game Over."), nl,
   nl,
   asserta(gameover),
@@ -205,11 +206,11 @@ leave_car :-
   nl,
   write("Feeling a nagging feeling of doubt towards Jeffrey, you make an escuse that"), nl,
   write("you need to leave the car to relieve yourself. Once he stops the car, you walk towards the bushes"), nl,
-  write("and continue into the woods until you can't be seen. Then you start looking for a path to your cousins house."), nl, nl,
+  write("and continue into the woods until you can't be seen. Then you start looking for a path to your cousin's house."), nl, nl,
   write("Despite Jeffery making the wrong turn, you were much closer to your cousin's place than before you got in the car."), nl,
   write("After an hour of walking, you could finally make out the lights shining in red and green in the dark. "), nl,
   write("Tired and hungry, but with a new spring in your step, you rush towards the light."), nl, nl,
-  write("Congratuations, you survived!"), nl,
+  write("Congratulations, you survived!"), nl,
   nl,
   fail.
  
@@ -325,7 +326,7 @@ wait :- % later
 % s003 -> s013
 search_car:-
   change_scene(s003, s013),
-  asserta(flashlight), nl,
+  additem(flashlight), nl,
   write("You search your car and picked up the flashlight baton you bought a few months ago."), nl,
     % something like this: https://www.thehomesecuritysuperstore.com/self-defense-self-defense-batons-flashlight-batons-sub=212
   write("This will surely help in the dark."), nl,
