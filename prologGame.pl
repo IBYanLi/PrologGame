@@ -10,6 +10,15 @@
 :- discontiguous
   leave/0.
 
+% beginning of story
+% HP(10).
+
+% change_HP(hp) :-
+%	HP(X),
+%	Y is (X - 5),
+%	retract(HP(_)), 
+%	asserta(HP(Y)).
+
 scene(s001). % starting point
 
 % helper to change scenes from S1 to S2.
@@ -21,10 +30,10 @@ change_scene(S1, S2) :-
 
 change_scene(_, _) :-
   gameover,
-  write("You died. If you wish to try again, you can 'redo', or you can 'restart'."), nl,
+  write("You died. If you wish to try again, you can 'change_your_mind', or you can 'restart'."), nl,
   fail.
 
-% TODO: redo should reset the player to the last scene where they made
+% TODO: change_your_mind should reset the player to the last scene where they made
 %       the choice that killed them. Not sure how to dynamically call a method...
 
 % BEGIN: s001
@@ -40,8 +49,7 @@ game_start :-
   nl,
   write("It is getting late and snow is falling lightly. Do you stay in your car?"), nl,
   write("A: leave."),nl, % s002
-  write("B: stay."),nl, % s003
-  fail.
+  write("B: stay."),nl. % s003
 
 restart :-
   retract(gameover),
@@ -55,8 +63,7 @@ restart :-
   nl,
   write("It is getting late and snow is falling lightly. Do you stay in your car?"), nl,
   write("A: leave."),nl, % s002
-  write("B: stay."),nl, % s003
-  fail.
+  write("B: stay."),nl. % s003
 
 % s001 -> s002
 leave :-
@@ -68,8 +75,7 @@ leave :-
   write("Worried, you:"),nl,
   nl,
   write('A: run_away.'),nl, % s006
-  write('B: investigate.'),nl, % s007
-  fail.
+  write('B: investigate.'),nl. % s007
 
 % s002 -> s006
 run_away :- 
@@ -86,8 +92,7 @@ run_away :-
   write("You decide to:"), nl,
   nl,
   write("A: proceed."), nl, % s008
-  write("B: call. (and try your cell phone again)"), nl, % s009
-  fail.
+  write("B: call. (and try your cell phone again)"), nl. % s009
 
 
 % s002 -> s007
@@ -98,8 +103,7 @@ investigate :-
   write("Suddenly, a large grey-haired animal leaps out of the tree-line, landing on the snow-covered asphalt."), nl,
   nl,
   change_scene(s007, c007),
-  encounter,
-  fail.
+  encounter.
 
 end_investigate :-
   change_scene(c007, s007),
@@ -108,8 +112,9 @@ end_investigate :-
   nl,
   write("It seems you have a few options for what to do next."), nl,
   write("A: call. (You need medical attention.)"), nl,
-  write("B: rest."), nl,
-  fail.
+  write("B: rest."), nl.
+
+
 
 
 % s006 -> s009
@@ -122,10 +127,8 @@ call :-
   nl,
   write("It's too much for the poor cellphone to handle. It explodes, and you die a fiery death."), nl,
   write("Game Over."), nl,
-  asserta(gameover),
-  fail.
+  asserta(gameover).
 
-  
 % s007 -> s009
 call :-
   change_scene(s007, s009),
@@ -138,8 +141,7 @@ call :-
   nl,
   write("It's too much for the poor cellphone to handle. It explodes, and you die a fiery death."), nl,
   write("Game Over."), nl,
-  asserta(gameover),
-  fail.
+  asserta(gameover).
 
 % s001 -> s003
 stay :- 
@@ -151,8 +153,7 @@ stay :-
   write("Eventually you:"), nl,
   nl,
   write("A: fall_asleep."), nl, % s004
-  write("B: leave."), nl, % s005
-  fail.
+  write("B: leave."), nl. % s005
 
 % s003 -> s004
 fall_asleep :- 
@@ -160,8 +161,7 @@ fall_asleep :-
   nl,
   write("You never wake up."), nl, 
   write("Game Over."), nl,
-  asserta(gameover),
-  fail.
+  asserta(gameover).
 
 % s003 -> s005
 leave :-

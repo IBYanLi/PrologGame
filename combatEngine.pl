@@ -43,19 +43,14 @@ endCombat :-
 combatOptions :-
 	checkPlayerState,
 	checkWolfState,
-	playerHealth(PH),
-	wolfHealth(WH),
 	inCombat, % to see if game has ended from death
-	write("Your health is currently: "), print(PH), write("/3"),nl,
-	write("The wolf's health is currently: "), print(WH), write("/3"),nl,
 	write("You stare down the wolf as it continues to circle you."), nl,
 	nl,
 	write("What do you do?"), nl,
 	write("A: strike."), nl,
 	write("B: dodge."), nl,
 	write("C: run."), nl,
-	nl,
-	fail.
+	nl.
 
 strike :- % randomizer for strike outcome
 	\+ dodged,
@@ -192,3 +187,4 @@ checkWolfState :- % wolf died
 	write("You collapse to the ground, unable to believe what has just transpired."), nl,
 	nl,
 	endCombat.
+
