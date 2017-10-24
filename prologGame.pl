@@ -88,6 +88,7 @@ redo :- % for inCombat
 
 % BEGIN: s001
 game_start :-
+  add_item(car_keys), add_item(phone),
   nl,
   write("Welcome to our prolog adventure game. Choose how to proceed in your journey "),
   write("and survive until the end!"), nl, 
@@ -242,7 +243,33 @@ investigate :-
   write("Suddenly, a large grey-haired animal leaps out of the tree-line, landing on the snow-covered asphalt."), nl,
   nl,
   change_scene(s007a, c007),
+  checkInv(flashlight),
+  encounter(flashlight),
+  fail.
+
+% s002 -> s007a
+investigate :-
+  change_scene(s002, s007a),
+  nl,
+  write("You walk slowly towards the bushes. As you get close, you can hear a low growl."), nl,
+  write("Suddenly, a large grey-haired animal leaps out of the tree-line, landing on the snow-covered asphalt."), nl,
+  nl,
+  change_scene(s007a, c007),
+  \+checkInv(flashlight),
   encounter,
+  fail.
+
+end_investigate :-
+  checkInv(flashlight), change_scene(c007, s007b),
+  write("You crawl, painfully, towards the concrete median that separates the two lanes of the highway."), nl,
+  write("You sit up against the median for a minute, catching your breath."), nl,
+  nl,
+  write("It seems you have a few options for what to do next."), nl,
+  write("You are still a ways away from your cousin's place, and you are exhausted and beaten down."), nl,
+  write("You discard your bloody and broken flashlight. It won't do you any good now."), nl,
+  remove_item(flashlight),
+  write("A: call_for_help."), nl, %s009
+  write("B: proceed."), nl, %s010
   fail.
 
 end_investigate :-
@@ -327,7 +354,7 @@ wait :- % later
 % s003 -> s013
 search_car:-
   change_scene(s003, s013),
-  additem(flashlight), nl,
+  add_item(flashlight), nl,
   write("You search your car and picked up the flashlight baton you bought a few months ago."), nl,
     % something like this: https://www.thehomesecuritysuperstore.com/self-defense-self-defense-batons-flashlight-batons-sub=212
   write("This will surely help in the dark."), nl,
