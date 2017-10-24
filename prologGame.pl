@@ -1,3 +1,5 @@
+:- consult(combatEngine).
+
 % Type game_start to begin your adventure!
 % Answer scenarios by typing the word in lowercase.
 
@@ -7,15 +9,6 @@
 
 :- discontiguous
   leave/0.
-
-% beginning of story
-% HP(10).
-
-% change_HP(hp) :-
-%	HP(X),
-%	Y is (X - 5),
-%	retract(HP(_)), 
-%	asserta(HP(Y)).
 
 scene(s001). % starting point
 
@@ -28,10 +21,10 @@ change_scene(S1, S2) :-
 
 change_scene(_, _) :-
   gameover,
-  write("You died. If you wish to try again, you can 'change_your_mind', or you can 'restart'."), nl,
+  write("You died. If you wish to try again, you can 'redo', or you can 'restart'."), nl,
   fail.
 
-% TODO: change_your_mind should reset the player to the last scene where they made
+% TODO: redo should reset the player to the last scene where they made
 %       the choice that killed them. Not sure how to dynamically call a method...
 
 % BEGIN: s001
@@ -47,14 +40,23 @@ game_start :-
   nl,
   write("It is getting late and snow is falling lightly. Do you stay in your car?"), nl,
   write("A: leave."),nl, % s002
-  write("B: stay."),nl. % s003
+  write("B: stay."),nl, % s003
+  fail.
 
 restart :-
   retract(gameover),
   retract(scene(_)),
   asserta(scene(s001)),
   nl,
-  game_start.
+  write("Your cousin Sam had invited you to over for Christmas."), nl,
+  write("His house is on a mountain above the city, and you planned to drive to his place."), nl,
+  write("Unfortunately, your car has broken down in the middle of the road."), nl,
+  write("With no one around you and no signal on your phone, you decide to leave your car."),nl,
+  nl,
+  write("It is getting late and snow is falling lightly. Do you stay in your car?"), nl,
+  write("A: leave."),nl, % s002
+  write("B: stay."),nl, % s003
+  fail.
 
 % s001 -> s002
 leave :-
@@ -65,11 +67,12 @@ leave :-
   write("You hear the sound of something rustling in the bushes."), nl,
   write("Worried, you:"),nl,
   nl,
-  write('A: run.'),nl, % s006
-  write('B: investigate.'),nl. % s007
+  write('A: run_away.'),nl, % s006
+  write('B: investigate.'),nl, % s007
+  fail.
 
 % s002 -> s006
-run :- 
+run_away :- 
   change_scene(s002, s006),
   nl,
   write("You back away slowly from the bushes. As you turn to make a dash up the side of the road,"), nl,
@@ -83,7 +86,8 @@ run :-
   write("You decide to:"), nl,
   nl,
   write("A: proceed."), nl, % s008
-  write("B: call. (and try your cell phone again)"), nl. % s009
+  write("B: call. (and try your cell phone again)"), nl, % s009
+  fail.
 
 % s002 -> s010
 proceed :-
@@ -103,9 +107,23 @@ proceed :-
 investigate :-
   change_scene(s002, s007),
   nl,
-  write("Curiousity killed the cat. You die."), nl,
-  write("Game Over."),
-  asserta(gameover).
+  write("You walk slowly towards the bushes. As you get close, you can hear a low growl."), nl,
+  write("Suddenly, a large grey-haired animal leaps out of the tree-line, landing on the snow-covered asphalt."), nl,
+  nl,
+  change_scene(s007, c007),
+  encounter,
+  fail.
+
+end_investigate :-
+  change_scene(c007, s007),
+  write("You crawl, painfully, towards the concrete median that separates the two lanes of the highway."), nl,
+  write("You sit up against the median for a minute, catching your breath."), nl,
+  nl,
+  write("It seems you have a few options for what to do next."), nl,
+  write("A: call. (You need medical attention.)"), nl,
+  write("B: rest."), nl,
+  fail.
+
 
 % s006 -> s009
 call :-
@@ -117,8 +135,24 @@ call :-
   nl,
   write("It's too much for the poor cellphone to handle. It explodes, and you die a fiery death."), nl,
   write("Game Over."), nl,
-  asserta(gameover).
+  asserta(gameover),
+  fail.
 
+  
+% s007 -> s009
+call :-
+  change_scene(s007, s009),
+  nl,
+  write("You need to call an ambulance, or your brother, or someone. This night is quickly unfolding into madness."), nl,
+  nl,
+  write("You pull out your Samsung Note 7 to check for a signal again."), nl,
+  write("You smack your phone against your hand as the screen doesn't turn on in response to the power button."), nl,
+  write("Maybe it's too cold? You hit the phone a few times against the concrete barricade."), nl,
+  nl,
+  write("It's too much for the poor cellphone to handle. It explodes, and you die a fiery death."), nl,
+  write("Game Over."), nl,
+  asserta(gameover),
+  fail.
 
 % s001 -> s003
 stay :- 
@@ -130,7 +164,8 @@ stay :-
   write("Eventually you:"), nl,
   nl,
   write("A: fall_asleep."), nl, % s004
-  write("B: leave."), nl. % s005
+  write("B: leave."), nl, % s005
+  fail.
 
 % s003 -> s004
 fall_asleep :- 
@@ -138,7 +173,8 @@ fall_asleep :-
   nl,
   write("You never wake up."), nl, 
   write("Game Over."), nl,
-  asserta(gameover).
+  asserta(gameover),
+  fail.
 
 % s003 -> s005
 leave :-
