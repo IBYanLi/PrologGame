@@ -8,8 +8,10 @@ prop(s004, scene, fall_asleep).
 prop(s005, scene, wait).
 prop(s006, scene, run_away).
 prop(s007a, scene, investigate).
-prop(c007, scene, encounter).
-prop(s007b, scene, end_investigate).
+prop(c007f, scene, encounter(flashlight)). % with flashlight
+prop(c007s, scene, encounter). % with stick
+prop(s007f, scene, end_investigate).
+prop(s007s, scene, end_investigate).
 prop(s009, scene, call).
 prop(s010, scene, proceed).
 prop(s011, scene, sure).
@@ -26,8 +28,10 @@ prop(s002, goto, s007a).
 prop(s003, goto, s004).
 prop(s003, goto, s005).
 prop(s006, goto, s009).
-prop(s007a, goto, c007).
-prop(c007, goto, s007b).
+prop(s007a, goto, c007f). % to loop combat back on itself
+prop(s007a, goto, c007s). % to loop combat back on itself
+prop(c007f, goto, s007b).
+prop(c007s, goto, s007b).
 prop(s007b, goto, s009).
 prop(s007b, goto, s010).
 prop(s003, goto, s001).

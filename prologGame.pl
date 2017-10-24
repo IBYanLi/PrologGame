@@ -38,7 +38,6 @@ change_scene(S1, S2) :-
 change_scene(_, _) :-
   gameover,
   \+ changingmind,
-  write("YOU DIED"), nl,
   write("If you wish to try again, you can 'redo', or you can 'restart'."), nl,
   fail.
 
@@ -68,19 +67,17 @@ redo :- % for inCombat
   inCombat,
 
   % set the current scene correctly to call the last scene without error
-  lastscene(PREV),
   scene(CURR),
-  prop(GOODCODE, goto, PREV),
-  change_scene(CURR, GOODCODE),
 
   % get the last scene
-  prop(PREV, scene, CALL),
+  prop(CURR, scene, CALL),
 
   % reset health for combat
   retract(playerHealth(_)),
   retract(wolfHealth(_)),
   asserta(playerHealth(3)),
   asserta(wolfHealth(3)),
+  retract(inCombat),
 
   retract(changingmind),
   retract(gameover),
@@ -194,11 +191,11 @@ correct_him :-
   write("You look back at him with uncertainty, and he continues to smile at you."), nl,
   write("'I know my way around here.' He reassures you."), nl,
   write("You finally drop the subject and decide to trust his sense of direction."), nl, 
-  write("Looking for a subject of conversation, you ask, 'So, what's your full name?'"), nl, 
+  write("Looking for a subject of conversation, you ask, 'So, what's your full name?'"), nl, nl,
   write("He stares ahead at the road and replies, 'Jeffrey Dahmer. You can just call me Jeff.'"), nl, 
   write("'Nice, nice. Thanks again for the ride, Jeff.'"), nl, 
   write("The two of you continued along the road towards the darkness."), nl,
-  write("You were never seen at your cousin's house that night, nor anywhere else again."), nl,
+  write("You were never seen at your cousin's house that night, nor anywhere else again."), nl, nl,
   write("Game Over."), nl,
   nl,
   asserta(gameover),
@@ -239,35 +236,37 @@ nah :-
   
 % s002 -> s007a
 investigate :-
+  checkInv(flashlight), % with flashlight
   change_scene(s002, s007a),
   nl,
-  write("You walk slowly towards the bushes. As you get close, you can hear a low growl."), nl,
+  write("You walk slowly towards the bushes, shining your flashlight into the treeline to get a better look."), nl,
+  write("As you get close, you can hear a low growl."), nl, nl,
   write("Suddenly, a large grey-haired animal leaps out of the tree-line, landing on the snow-covered asphalt."), nl,
   nl,
-  change_scene(s007a, c007),
-  checkInv(flashlight),
+  change_scene(s007a, c007f),
   encounter(flashlight),
   fail.
 
 % s002 -> s007a
 investigate :-
+  \+checkInv(flashlight),
   change_scene(s002, s007a),
   nl,
   write("You walk slowly towards the bushes. As you get close, you can hear a low growl."), nl,
   write("Suddenly, a large grey-haired animal leaps out of the tree-line, landing on the snow-covered asphalt."), nl,
   nl,
-  change_scene(s007a, c007),
-  \+checkInv(flashlight),
+  change_scene(s007a, c007s),
   encounter,
   fail.
 
 end_investigate :-
-  checkInv(flashlight), change_scene(c007, s007b),
+  checkInv(flashlight),
+  change_scene(c007f, s007b),
   write("You crawl, painfully, towards the concrete median that separates the two lanes of the highway."), nl,
   write("You sit up against the median for a minute, catching your breath."), nl,
   nl,
   write("It seems you have a few options for what to do next."), nl,
-  write("You are still a ways away from your cousin's place, and you are exhausted and beaten down."), nl,
+  write("You are still a ways away from your cousin's place, and you are exhausted and beaten down."), nl, nl,
   write("You discard your bloody and broken flashlight. It won't do you any good now."), nl,
   remove_item(flashlight),
   write("A: call_for_help."), nl, %s009
@@ -275,7 +274,7 @@ end_investigate :-
   fail.
 
 end_investigate :-
-  change_scene(c007, s007b),
+  change_scene(c007s, s007b),
   write("You crawl, painfully, towards the concrete median that separates the two lanes of the highway."), nl,
   write("You sit up against the median for a minute, catching your breath."), nl,
   nl,
@@ -353,7 +352,7 @@ wait :- % later
   write("As the temperatures drop further your eyelids droop. Maybe a little nap wouldn't hurt..."), nl, nl,
   write("You never wake up."), nl,
   nl,
-  write("YOU DIED"), nl,
+  write("Game Over."), nl,
   nl,
   asserta(gameover),
   fail.

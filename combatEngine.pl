@@ -67,46 +67,62 @@ combatOptions :-
 	nl,
 	fail.
 
-strike :- % randomizer for strike outcome
-	\+ dodged,
-	checkInv(stick),
+strike :-
+	asserta(striking),
 	inCombat,
+	checkInv(stick),
+	strike(stick).
+
+strike :-
+	inCombat,
+	checkInv(flashlight),
+	strike(flashlight).
+
+strike(stick) :- % randomizer for strike outcome
+	striking,
+	\+ dodged,	
 	random_between(0, 2, RES),
 	strike(RES).
 
-strike :- % randomizer for strike outcome, but with flashlight
+strike(flashlight) :- % randomizer for strike outcome, but with flashlight
+	striking,
 	\+ dodged,
-	checkInv(flashlight),
-	inCombat,
 	random_between(0, 3, RES),
 	strike(RES, flashlight).
 
-strike :- % after dodging
-	inCombat,
+strike(_) :- % after dodging
 	dodged, retract(dodged),
+	striking,
+	inCombat,
 	nl,
 	write("You take advantage of your position."), nl,
 	write("You side step the wolf and swing hard into the wolf's side, finding purchase in its soft underbelly."), nl,
 	nl,
 	subHealth(wolf, 2),
+	retract(striking),
 	combatOptions.
 
 strike(0) :-
+	striking,
 	nl,
 	write("You lunge for the wolf and swing your stick wildly."), nl,
 	write("You surprise even yourself when it makes solid contact into the wolf's side. It staggers, shocked."), nl,
 	nl,
 	subHealth(wolf, 1),
+	retract(striking),
 	combatOptions.
 
 strike(1) :-
+	striking,
 	nl,
 	write("You lunge for the wolf and swing your stick wildly."), nl,
 	write("You miss the wolf, slamming the stick straight into the powdered snow."), nl,
 	nl,
+	retract(striking),
 	combatOptions.
 
 strike(2) :-
+	striking,
 	nl,
 	write("You lunge for the wolf and swing your stick wildly."), nl,
 	write("You miss the wolf and lose your footing, not expecting the cold asphalt to be as slippery as it is."), nl,
@@ -115,32 +131,40 @@ strike(2) :-
 	write("You yell out in pain. That was a mistake."), nl,
 	nl,
 	subHealth(player, 2),
+	retract(striking),
 	combatOptions.
 
 strike(0, flashlight) :-
+	striking,
 	nl,
 	write("You swing your baton just as the wolf lunges, smashing your weapon against its head with a sickly crunch."), nl,
 	write("The wolf impacts the snowy ground with an impressive OOMPH, and twitched once."), nl,
 	write("It did not move."), nl,
 	nl,
+	retract(striking),
 	endCombat.
 
 strike(1, flashlight) :-
+	striking,
 	nl,
 	write("You lunge for the wolf and swing your baton wildly."), nl,
 	write("You surprise even yourself when it makes solid contact into the wolf's side. It staggers, shocked."), nl,
 	nl,
 	subHealth(wolf, 2),
+	retract(striking),
 	combatOptions.
 
 strike(2, flashlight) :-
+	striking,
 	nl,
 	write("You lunge for the wolf and swing your baton wildly."), nl,
 	write("You miss the wolf, slamming the baton straight into the powdered snow."), nl,
 	nl,
+	retract(striking),
 	combatOptions.
 
 strike(3, flashlight) :-
+	striking,
 	nl,
 	write("You lunge for the wolf and swing your baton wildly."), nl,
 	write("You miss the wolf and lose your footing, not expecting the cold asphalt to be as slippery as it is."), nl,
@@ -149,6 +173,7 @@ strike(3, flashlight) :-
 	write("You force it off with your baton before it gets a good grip, but still you yell out in pain. That was a mistake."), nl,
 	nl,
 	subHealth(player, 1),
+	retract(striking),
 	combatOptions.
 
 dodge :- % randomizer for dodge outcome
@@ -207,7 +232,6 @@ run :-
 	nl,
 	write("Game Over."),
 	asserta(gameover),
-	endCombat,
 	fail.
 
 % check player state before providing options
@@ -228,7 +252,6 @@ checkPlayerState :- % player died
 	nl,
 	write("Game Over."), nl,
 	asserta(gameover),
-	endCombat,
 	fail.
 
 checkWolfState :-
