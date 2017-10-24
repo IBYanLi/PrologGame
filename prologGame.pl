@@ -15,8 +15,8 @@
 :- discontiguous
   leave/0.
 
-scene(s001). % starting point
-lastscene(x). % to store previous
+scene(s001). % default starting point
+lastscene(x). % to store previous scene
 
 % helper to change scenes from S1 to S2.
 change_scene(S1, S2) :-
@@ -41,6 +41,8 @@ change_scene(_, _) :-
   write("If you wish to try again, you can 'redo', or you can 'restart'."), nl,
   fail.
 
+
+% FUNCTIONALITY FOR RETURNING TO LAST CHOICE
 redo :- % for not inCombat
   asserta(changingmind),
   gameover,
@@ -85,6 +87,24 @@ redo :- % for inCombat
   % goto the last scene
   CALL.
 
+
+% RESTART for both gameover and non-gameover states
+restart :-
+  gameover, retract(gameover), % to clear the gameover
+  retract(lastscene(_)),
+  retract(scene(_)),
+  asserta(lastscene(x)),
+  asserta(scene(s001)),
+  game_start.
+
+restart :-
+  retract(lastscene(_)),
+  retract(scene(_)),
+  asserta(lastscene(x)),
+  asserta(scene(s001)),
+  game_start.
+
+
 % BEGIN: s001
 game_start :-
   add_item(car_keys), add_item(phone),
@@ -102,22 +122,6 @@ game_start :-
   write("A: leave."),nl, % s002
   write("B: get_in. (return to the car)" ),nl, % s003
   fail.
-
-% restarts for both gameover and non-gameover state
-restart :-
-  gameover, retract(gameover), % to clear the gameover
-  retract(lastscene(_)),
-  retract(scene(_)),
-  asserta(lastscene(x)),
-  asserta(scene(s001)),
-  game_start.
-
-restart :-
-  retract(lastscene(_)),
-  retract(scene(_)),
-  asserta(lastscene(x)),
-  asserta(scene(s001)),
-  game_start.
 
 % s001, s003, s013 -> s002
 leave :-
@@ -215,7 +219,7 @@ leave_car :-
   nl,
   fail.
  
-  % s0010 -> s012
+% s0010 -> s012
 nah :-
   change_scene(s010, s012),
   nl,
@@ -259,6 +263,7 @@ investigate :-
   encounter,
   fail.
 
+% c007f -> s007b
 end_investigate :-
   checkInv(flashlight),
   change_scene(c007f, s007b),
@@ -273,6 +278,7 @@ end_investigate :-
   write("B: proceed."), nl, %s010
   fail.
 
+% c007s -> s007b
 end_investigate :-
   change_scene(c007s, s007b),
   write("You crawl, painfully, towards the concrete median that separates the two lanes of the highway."), nl,

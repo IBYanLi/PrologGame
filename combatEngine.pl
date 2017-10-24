@@ -11,6 +11,7 @@
 playerHealth(3).
 wolfHealth(3).
 
+% BEGIN encounter with flashlight
 encounter(flashlight):-
 	\+ inCombat,
 	\+ gameover,
@@ -20,6 +21,7 @@ encounter(flashlight):-
 	asserta(inCombat),
 	combatOptions.
 
+% BEGIN encounter without flashlight
 encounter :-
 	\+ inCombat,
 	\+ gameover,
@@ -31,6 +33,7 @@ encounter :-
 	asserta(inCombat),
 	combatOptions.
 
+% HEALTH SETTERS
 subHealth(player, D) :-
 	playerHealth(OH),
 	NH is OH - D,
@@ -43,13 +46,14 @@ subHealth(wolf, D) :-
 	retract(wolfHealth(OH)),
 	asserta(wolfHealth(NH)).
 
+% reset combat state and return to story
 endCombat :-
 	retract(inCombat),
 	\+ gameover,
 	end_investigate.
 
 
-% default end for each combat dialogue
+% PROVIDE COMBAT OPTIONS TO PLAYER AT END OF EACH CYCLE
 combatOptions :-
 	checkPlayerState,
 	checkWolfState,
@@ -67,29 +71,32 @@ combatOptions :-
 	nl,
 	fail.
 
-strike :-
+% STRIKE entry point
+strike :- % with stick
 	asserta(striking),
 	inCombat,
 	checkInv(stick),
 	strike(stick).
 
-strike :-
+strike :- % with flashlight
 	inCombat,
 	checkInv(flashlight),
 	strike(flashlight).
 
-strike(stick) :- % randomizer for strike outcome
+% randomizers for strike outcomes
+strike(stick) :- % with stick
 	striking,
 	\+ dodged,	
 	random_between(0, 2, RES),
 	strike(RES).
 
-strike(flashlight) :- % randomizer for strike outcome, but with flashlight
+strike(flashlight) :- % with flashlight
 	striking,
 	\+ dodged,
 	random_between(0, 3, RES),
 	strike(RES, flashlight).
 
+% for striking after a dodge
 strike(_) :- % after dodging
 	dodged, retract(dodged),
 	striking,
@@ -102,6 +109,7 @@ strike(_) :- % after dodging
 	retract(striking),
 	combatOptions.
 
+% resolve outcomes for striking with stick
 strike(0) :-
 	striking,
 	nl,
@@ -134,6 +142,7 @@ strike(2) :-
 	retract(striking),
 	combatOptions.
 
+% resolve outcomes for striking with flashlight
 strike(0, flashlight) :-
 	striking,
 	nl,
@@ -176,14 +185,16 @@ strike(3, flashlight) :-
 	retract(striking),
 	combatOptions.
 
-dodge :- % randomizer for dodge outcome
+% DODGE ENTRY POINT
+dodge :-
 	assert(dodging), % to ensure single instance of dodge is called
 	\+ dodged,
 	inCombat,
-	random_between(0, 2, RES),
+	random_between(0, 2, RES), % dodge outcome randomizer
 	dodge(RES).
 
-dodge :- % for dodging twice in a row
+% to remove dodge bonus if dodging twice in succession
+dodge :-
 	dodging,
 	dodged, retract(dodged),
 	inCombat,
@@ -196,6 +207,7 @@ dodge :- % for dodging twice in a row
 	retract(dodging),
 	combatOptions.
 
+% resolve outcomes for dodge
 dodge(N) :-
 	dodging,
 	N > 0,
@@ -221,6 +233,7 @@ dodge(0) :-
 	retract(dodging),
 	combatOptions.
 
+% RUN ENTRY POINT
 run :-
 	inCombat,
 	nl,
@@ -254,6 +267,7 @@ checkPlayerState :- % player died
 	asserta(gameover),
 	fail.
 
+% check wolf state before providing options
 checkWolfState :-
 	wolfHealth(N),
 	N > 1.

@@ -1,20 +1,16 @@
+% http://wiki.ubc.ca/Course:CPSC312-2017-Choose_Your_Adventure
+% File for inventory manager provides all interfaces for working w/ items
 :- dynamic
 	items/1.
 
-items([]).
+items([]). % the inventory
 
-%check if a certain item is in inventory
-%http://wiki.ubc.ca/Course:CPSC312-2017-Choose_Your_Adventure
-
-checkInv(X, [X]).
-checkInv(X, [X|_]).
-checkInv(X, [_|Y]) :- checkInv(X, Y).
-checkInv(X) :- items(Y), checkInv(X, Y).
 
 % helper to iterate on inventory items
 list_items([X|Y]) :-
 	tab(2), write(X), nl,
 	list_items(Y).
+
 
 % LIST INVENTORY CONTENTS
 inventory :-
@@ -31,6 +27,7 @@ inventory :-
 	write("You have: "), nl,
 	list_items(ILIST).
 
+
 % ADD AN ITEM TO THE LIST
 add_item(ITEM) :-
 	items(LIST),
@@ -42,6 +39,7 @@ append([H|T], ITEM, [H|R]) :-
 	append(T, ITEM, R).
 
 append([], ITEM, [ITEM | []]).
+
 
 % REMOVE AN ITEM FROM THE LIST
 remove_item(ITEM) :-
@@ -55,3 +53,10 @@ removeOne([H|T], ITEM, [H|R]) :-
 	removeOne(T, ITEM, R).
 
 removeOne([ITEM|T], ITEM, T).
+
+
+% CHECK FOR ITEM
+checkInv(X, [X]).
+checkInv(X, [X|_]).
+checkInv(X, [_|Y]) :- checkInv(X, Y).
+checkInv(X) :- items(Y), checkInv(X, Y).
