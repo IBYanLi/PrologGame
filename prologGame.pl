@@ -317,10 +317,6 @@ get_in :-
   write("D: search_car."), nl, %s013
   fail.
 
-% s003 -> s004
-sleep :- 
-  change_scene(s003, s004),
-
 % s003, s013 -> s004
 fall_asleep :- 
   scene(N), member(N, [s003, s013]), % multiple entry
