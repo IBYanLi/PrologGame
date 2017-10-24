@@ -65,8 +65,7 @@ strike :- % randomizer for strike outcome
 
 strike :- % after dodging
 	inCombat,
-	dodged,
-	retract(dodged),
+	dodged, retract(dodged),
 	nl,
 	write("You take advantage of your position."), nl,
 	write("You side step the wolf and swing hard into the wolf's side, finding purchase in its soft underbelly."), nl,
@@ -101,14 +100,15 @@ strike(2) :-
 	combatOptions.
 
 dodge :- % randomizer for dodge outcome
+	assert(dodging), % to ensure single instance of dodge is called
 	\+ dodged,
 	inCombat,
 	random_between(0, 2, RES),
 	dodge(RES).
 
 dodge :- % for dodging twice in a row
-	dodged,
-	retract(dodged),
+	dodging,
+	dodged, retract(dodged),
 	inCombat,
 	nl,
 	write("You back away from the wolf, paralyzed with fear."), nl,
@@ -116,9 +116,11 @@ dodge :- % for dodging twice in a row
 	nl,
 	write("Seems you've missed your opportunity."), nl,
 	nl,
+	retract(dodging),
 	combatOptions.
 
 dodge(N) :-
+	dodging,
 	N > 0,
 	inCombat,
 	nl,
@@ -129,14 +131,17 @@ dodge(N) :-
 	write("This may be a good time to take a swing..."), nl,
 	nl,
 	asserta(dodged),
+	retract(dodging),
 	combatOptions.
 
 dodge(0) :-
+	dodging,
 	inCombat,
 	nl,
 	write("You carefully observe the wolf's movements."), nl,
 	write("It growls, but does not make a move towards you. It appears to be waiting for you to make the first move."), nl,
 	nl,
+	retract(dodging),
 	combatOptions.
 
 run :-
