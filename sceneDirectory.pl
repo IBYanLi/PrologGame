@@ -17,7 +17,7 @@ prop(s010, scene, proceed).
 prop(s010, scene, continue_walking).
 prop(s011, scene, sure).
 prop(s012, scene, nah).
-prop(s013, scene, correct_him).
+prop(s016, scene, correct_him).
 prop(s014, scene, leave_car).
 prop(s013, scene, search_car).
 
@@ -36,7 +36,7 @@ prop(s007b, goto, s010).
 prop(s003, goto, s001).
 prop(s010, goto, s011).
 prop(s010, goto, s012).
-prop(s011, goto, s013).
+prop(s011, goto, s016).
 prop(s011, goto, s014).
 prop(s003, goto, s013).
 prop(s013, goto, s004).

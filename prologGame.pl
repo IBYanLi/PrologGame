@@ -179,9 +179,9 @@ sure :-
   write("B: leave_car. (You may as well go the rest of the way yourself.)"), nl, %s014
   fail.  
 
-% s0011 -> s013
+% s0011 -> s016
 correct_him :-
-  change_scene(s011, s013),
+  change_scene(s011, s016),
   nl,
   write("You timidly broach the issue."), nl,
   write("'Hey man, it seems that you are going in the wrong direction...?"), nl,
