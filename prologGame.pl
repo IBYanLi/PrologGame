@@ -36,10 +36,10 @@ change_scene(S1, S2) :-
 change_scene(_, _) :-
   gameover,
   \+ changingmind,
-  write("You died. If you wish to try again, you can 'change_your_mind', or you can 'restart'."), nl,
+  write("You died. If you wish to try again, you can 'redo', or you can 'restart'."), nl,
   fail.
 
-change_your_mind :- % for not inCombat
+redo :- % for not inCombat
   asserta(changingmind),
   gameover,
   \+ inCombat,
@@ -59,7 +59,7 @@ change_your_mind :- % for not inCombat
   % goto the last scene
   CALL.
 
-change_your_mind :- % for inCombat
+redo :- % for inCombat
   asserta(changingmind),
   gameover,
   inCombat,
@@ -101,20 +101,22 @@ game_start :-
   write("B: stay."),nl, % s003
   fail.
 
+% restarts for both gameover and non-gameover state
 restart :-
+  gameover,
   retract(gameover),
+  retract(lastscene(_)),
   retract(scene(_)),
+  
   asserta(scene(s001)),
-  nl,
-  write("Your cousin Sam had invited you to over for Christmas."), nl,
-  write("His house is on a mountain above the city, and you planned to drive to his place."), nl,
-  write("Unfortunately, your car has broken down in the middle of the road."), nl,
-  write("With no one around you and no signal on your phone, you decide to leave your car."),nl,
-  nl,
-  write("It is getting late and snow is falling lightly. Do you stay in your car?"), nl,
-  write("A: leave."),nl, % s002
-  write("B: stay."),nl, % s003
-  fail.
+  game_start.
+
+restart :-
+  retract(lastscene(_)),
+  retract(scene(_)),
+  
+  asserta(scene(s001)),
+  game_start.
 
 % s001 -> s002
 leave :-
@@ -169,7 +171,7 @@ investigate :-
   write("Suddenly, a large grey-haired animal leaps out of the tree-line, landing on the snow-covered asphalt."), nl,
   nl,
   change_scene(s007a, c007),
-  encounter.
+  encounter,
   fail.
 
 end_investigate :-
@@ -179,7 +181,7 @@ end_investigate :-
   nl,
   write("It seems you have a few options for what to do next."), nl,
   write("A: call_for_help."), nl,
-  write("B: rest."), nl.
+  write("B: rest."), nl,
   fail.
 
 % s006 -> s009
@@ -193,6 +195,7 @@ call :-
   write("It's too much for the poor cellphone to handle. It explodes, and you die a fiery death."), nl,
   nl,
   write("Game Over."), nl,
+  nl,
   asserta(gameover),
   fail.
 
@@ -210,6 +213,7 @@ call_for_help :-
   write("It's too much for the poor cellphone to handle. It explodes, and you die a fiery death."), nl,
   nl,
   write("Game Over."), nl,
+  nl,
   asserta(gameover),
   fail.
 
@@ -231,7 +235,9 @@ fall_asleep :-
   change_scene(s003, s004),
   nl,
   write("You never wake up."), nl, 
+  nl,
   write("Game Over."), nl,
+  nl,
   asserta(gameover),
   fail.
 
