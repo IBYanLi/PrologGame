@@ -93,6 +93,8 @@ restart :-
   gameover, retract(gameover), % to clear the gameover
   retract(lastscene(_)),
   retract(scene(_)),
+  retract(items(_)),
+  asserta(items([])),
   asserta(lastscene(x)),
   asserta(scene(s001)),
   game_start.
@@ -100,6 +102,8 @@ restart :-
 restart :-
   retract(lastscene(_)),
   retract(scene(_)),
+  retract(items(_)),
+  asserta(items([])),
   asserta(lastscene(x)),
   asserta(scene(s001)),
   game_start.
