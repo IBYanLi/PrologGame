@@ -103,18 +103,17 @@ game_start :-
 
 % restarts for both gameover and non-gameover state
 restart :-
-  gameover,
-  retract(gameover),
+  gameover, retract(gameover), % to clear the gameover
   retract(lastscene(_)),
   retract(scene(_)),
-  
+  asserta(lastscene(x)),
   asserta(scene(s001)),
   game_start.
 
 restart :-
   retract(lastscene(_)),
   retract(scene(_)),
-  
+  asserta(lastscene(x)),
   asserta(scene(s001)),
   game_start.
 
@@ -146,13 +145,14 @@ run_away :-
   nl,
   write("You decide to:"), nl,
   nl,
-  write("A: proceed."), nl, % s008
+  write("A: proceed."), nl, % s010
   write("B: call. (and try your cell phone again)"), nl, % s009
   fail.
 
 % s006 -> s010
 proceed :-
-  change_scene(s006, s010),
+  scene(N), member(N, [s006, s007b]),
+  change_scene(N, s010),
   nl,
   write("You continue walking up the mountain, considering the choices that led you to this predicament."), nl,
   write("The temperatures drop as the night grows darker. You follow the road, hoping that"), nl,
@@ -251,22 +251,7 @@ end_investigate :-
   write("It seems you have a few options for what to do next."), nl,
   write("You are still a ways away from your cousin's place, and you are exhausted and beaten down."), nl,
   write("A: call_for_help."), nl, %s009
-  write("B: continue_walking."), nl, %s010
-  fail.
-
-% s007b -> s010
-continue_walking :-
-  change_scene(s007b, s010),
-  nl,
-  write("You continue walking up the mountain, considering the choices that led you to this predicament."), nl,
-  write("The temperatures drop as the night grows darker. You follow the road, hoping that"), nl,
-  write("someone might drive by and pick up a hitchiker in need."), nl, nl,
-  write("After half an hour trudging up the cold and dark mountain, you see headlights in the distance."), nl,
-  write("You frantically wave your arms like a man possessed, and the car stops beside you."), nl,
-  write("The driver rolls down the windows, and the man inside introduces himself."), nl, nl,
-  write("'Hey, my name is Jeffrey. Do you need a ride?'"), nl,
-  write("A: sure."), nl, %s011
-  write("B: nah."), nl, %s012
+  write("B: proceed."), nl, %s010
   fail.
   
 % s006 -> s009
