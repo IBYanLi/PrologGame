@@ -37,7 +37,8 @@ change_scene(S1, S2) :-
 change_scene(_, _) :-
   gameover,
   \+ changingmind,
-  write("You died. If you wish to try again, you can 'redo', or you can 'restart'."), nl,
+  write("YOU DIED"), nl,
+  write("If you wish to try again, you can 'redo', or you can 'restart'."), nl,
   fail.
 
 redo :- % for not inCombat
@@ -96,7 +97,7 @@ game_start :-
   nl,
   write("Your cousin Sam had invited you to over for Christmas."), nl,
   write("His house is on a mountain above the city, and you planned to drive to his place."), nl,
-  write("Unfortunately, your car has broken down in the middle of the road."), nl,
+  write("Unfortunately, a tree fell on your car in the middle of the road."), nl,
   write("With no one around you and no signal on your phone, you decide to leave your car."),nl,
   nl,
   write("It is getting late and snow is falling lightly. What do you do?"), nl,
@@ -320,7 +321,7 @@ call_for_help :-
 get_in :- 
   change_scene(s001, s003),
   nl,
-  write("The temperature is dropping steadily, and your car doesn't want to start."), nl, 
+  write("The cold wind whistles through the cracked glass, and the temperature in the car steadily drops."), nl, 
   nl,
   write("You feel that you may get sick if you stay in the car."), nl,
   nl,
@@ -348,7 +349,12 @@ wait :- % later
   scene(N), member(N, [s003, s013]), % multiple entry
   change_scene(N, s005),
   write("You decide to wait out the storm. Maybe the wind will settle down and you can make the trek on foot."), nl,
-  write("NOT DONE"), nl,
+  write("As the temperatures drop further your eyelids droop. Maybe a little nap wouldn't hurt..."), nl, nl,
+  write("You never wake up."), nl,
+  nl,
+  write("YOU DIED"), nl,
+  nl,
+  asserta(gameover),
   fail.
 
 % s003 -> s013
