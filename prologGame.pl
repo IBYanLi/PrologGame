@@ -1,31 +1,89 @@
 :- consult(combatEngine).
+:- consult(sceneDirectory).
 
 % Type game_start to begin your adventure!
 % Answer scenarios by typing the word in lowercase.
 
 :- dynamic
   scene/1,
-  gameover.
+  lastscene/1,
+  gameover,
+  changingmind.
 
 :- discontiguous
   leave/0.
 
 scene(s001). % starting point
+lastscene(x). % to store previous
 
 % helper to change scenes from S1 to S2.
 change_scene(S1, S2) :-
   \+ gameover,
   scene(S1),
+  retract(lastscene(_)),
+  asserta(lastscene(S1)),
   retract(scene(S1)),
   asserta(scene(S2)).
 
+% helper to change scene whilst retaining lastscene for change_your_mind
+change_scene(S1, S2) :-
+  gameover,
+  changingmind,
+  retract(scene(S1)),
+  asserta(scene(S2)).
+
+% fail to change scene if player is dead
 change_scene(_, _) :-
   gameover,
-  write("You died. If you wish to try again, you can 'redo', or you can 'restart'."), nl,
+  \+ changingmind,
+  write("You died. If you wish to try again, you can 'change_your_mind', or you can 'restart'."), nl,
   fail.
 
-% TODO: redo should reset the player to the last scene where they made
-%       the choice that killed them. Not sure how to dynamically call a method...
+change_your_mind :- % for not inCombat
+  asserta(changingmind),
+  gameover,
+  \+ inCombat,
+  
+  % set the current scene ID correctly to call the last scene without error
+  lastscene(PREV),
+  scene(CURR),
+  prop(GOODCODE, goto, PREV),
+  change_scene(CURR, GOODCODE),
+
+  % get the last scene
+  prop(PREV, scene, CALL),
+  
+  retract(changingmind),
+  retract(gameover),
+
+  % goto the last scene
+  CALL.
+
+change_your_mind :- % for inCombat
+  asserta(changingmind),
+  gameover,
+  inCombat,
+
+  % set the current scene correctly to call the last scene without error
+  lastscene(PREV),
+  scene(CURR),
+  prop(GOODCODE, goto, PREV),
+  change_scene(CURR, GOODCODE),
+
+  % get the last scene
+  prop(PREV, scene, CALL),
+
+  % reset health for combat
+  retract(playerHealth(_)),
+  retract(wolfHealth(_)),
+  asserta(playerHealth(3)),
+  asserta(wolfHealth(3)),
+
+  retract(changingmind),
+  retract(gameover),
+
+  % goto the last scene
+  CALL.
 
 % BEGIN: s001
 game_start :-
@@ -103,27 +161,26 @@ proceed :-
   write("A: yes_to_ride."), nl, %s011
   write("B: no_to_ride."), nl.
 
-% s002 -> s007
+% s002 -> s007a
 investigate :-
-  change_scene(s002, s007),
+  change_scene(s002, s007a),
   nl,
   write("You walk slowly towards the bushes. As you get close, you can hear a low growl."), nl,
   write("Suddenly, a large grey-haired animal leaps out of the tree-line, landing on the snow-covered asphalt."), nl,
   nl,
-  change_scene(s007, c007),
-  encounter,
+  change_scene(s007a, c007),
+  encounter.
   fail.
 
 end_investigate :-
-  change_scene(c007, s007),
+  change_scene(c007, s007b),
   write("You crawl, painfully, towards the concrete median that separates the two lanes of the highway."), nl,
   write("You sit up against the median for a minute, catching your breath."), nl,
   nl,
   write("It seems you have a few options for what to do next."), nl,
-  write("A: call. (You need medical attention.)"), nl,
-  write("B: rest."), nl,
+  write("A: call_for_help."), nl,
+  write("B: rest."), nl.
   fail.
-
 
 % s006 -> s009
 call :-
@@ -134,14 +191,15 @@ call :-
   write("Maybe it's too cold? You hit the phone a few times against the concrete barricade."), nl,
   nl,
   write("It's too much for the poor cellphone to handle. It explodes, and you die a fiery death."), nl,
+  nl,
   write("Game Over."), nl,
   asserta(gameover),
   fail.
 
   
-% s007 -> s009
-call :-
-  change_scene(s007, s009),
+% s007b -> s009
+call_for_help :-
+  change_scene(s007b, s009),
   nl,
   write("You need to call an ambulance, or your brother, or someone. This night is quickly unfolding into madness."), nl,
   nl,
@@ -150,6 +208,7 @@ call :-
   write("Maybe it's too cold? You hit the phone a few times against the concrete barricade."), nl,
   nl,
   write("It's too much for the poor cellphone to handle. It explodes, and you die a fiery death."), nl,
+  nl,
   write("Game Over."), nl,
   asserta(gameover),
   fail.
