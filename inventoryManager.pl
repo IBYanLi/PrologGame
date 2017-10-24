@@ -3,6 +3,13 @@
 
 items([]).
 
+%check if a certain item is in inventory
+
+checkInv(X, [X]).
+checkInv(X, [X|_]).
+checkInv(X, [_|Y]) :- checkInv(X, Y).
+checkInv(X) :- items(Y), checkInv(X, Y).
+
 % helper to iterate on inventory items
 list_items([X|Y]) :-
 	tab(2), write(X), nl,

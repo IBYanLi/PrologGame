@@ -91,6 +91,7 @@ game_start :-
   nl,
   write("Welcome to our prolog adventure game. Choose how to proceed in your journey "),
   write("and survive until the end!"), nl, 
+  write("Write 'inventory.' to check your inventory."), nl,
   nl,
   write("Your cousin Sam had invited you to over for Christmas."), nl,
   write("His house is on a mountain above the city, and you planned to drive to his place."), nl,
@@ -136,7 +137,7 @@ leave :-
 run_away :- 
   change_scene(s002, s006),
   nl,
-  write("You back away slowly from the bushes. As you turn to make a dash up the side of the road,"), nl,
+  write("You back away slowly from the bushes. As you turn to dash up the side of the road,"), nl,
   write("the bushes rustle again. You ignore the sound and bolt up the road in fear."), nl,
   nl,
   write("You run until your lungs are on fire, and your legs cannot take you another step."), nl,
