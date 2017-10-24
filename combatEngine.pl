@@ -46,12 +46,21 @@ subHealth(wolf, D) :-
 	retract(wolfHealth(OH)),
 	asserta(wolfHealth(NH)).
 
-% reset combat state and return to story
+% reset combat state (w/ flashlight) and return to story
 endCombat :-
+	checkInv(flashlight),
+	retract(inCombat),
+	\+ gameover,
+	write("You discard your bloody and broken flashlight. It won't do you any good now."), nl, nl,
+  	remove_item(flashlight),
+	end_investigate.
+
+% reset combat state (w/ stick) and return to story
+endCombat :-
+	checkInv(stick),
 	retract(inCombat),
 	\+ gameover,
 	end_investigate.
-
 
 % PROVIDE COMBAT OPTIONS TO PLAYER AT END OF EACH CYCLE
 combatOptions :-

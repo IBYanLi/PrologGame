@@ -10,9 +10,9 @@ prop(s006, scene, run_away).
 prop(s007a, scene, investigate).
 prop(c007f, scene, encounter(flashlight)). % with flashlight
 prop(c007s, scene, encounter). % with stick
-prop(s007f, scene, end_investigate).
-prop(s007s, scene, end_investigate).
-prop(s009, scene, call).
+prop(s007b, scene, end_investigate).
+prop(s008, scene, call).
+prop(s009, scene, call_for_help).
 prop(s010, scene, proceed).
 prop(s011, scene, sure).
 prop(s012, scene, nah).
@@ -27,7 +27,7 @@ prop(s002, goto, s006).
 prop(s002, goto, s007a).
 prop(s003, goto, s004).
 prop(s003, goto, s005).
-prop(s006, goto, s009).
+prop(s006, goto, s008).
 prop(s007a, goto, c007f). % to loop combat back on itself
 prop(s007a, goto, c007s). % to loop combat back on itself
 prop(c007f, goto, s007b).

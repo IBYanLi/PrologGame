@@ -267,24 +267,10 @@ investigate :-
   encounter,
   fail.
 
-% c007f -> s007b
+% c007s, c007f -> s007b
 end_investigate :-
-  checkInv(flashlight),
-  change_scene(c007f, s007b),
-  write("You crawl, painfully, towards the concrete median that separates the two lanes of the highway."), nl,
-  write("You sit up against the median for a minute, catching your breath."), nl,
-  nl,
-  write("It seems you have a few options for what to do next."), nl,
-  write("You are still a ways away from your cousin's place, and you are exhausted and beaten down."), nl, nl,
-  write("You discard your bloody and broken flashlight. It won't do you any good now."), nl,
-  remove_item(flashlight),
-  write("A: call_for_help."), nl, %s009
-  write("B: proceed."), nl, %s010
-  fail.
-
-% c007s -> s007b
-end_investigate :-
-  change_scene(c007s, s007b),
+  scene(N), member(N, [c007s, c007f]),
+  change_scene(N, s007b),
   write("You crawl, painfully, towards the concrete median that separates the two lanes of the highway."), nl,
   write("You sit up against the median for a minute, catching your breath."), nl,
   nl,
@@ -294,9 +280,9 @@ end_investigate :-
   write("B: proceed."), nl, %s010
   fail.
   
-% s006 -> s009
+% s006 -> s008
 call :-
-  change_scene(s006, s009),
+  change_scene(s006, s008),
   nl,
   write("You pull out your Samsung Note 7 to check for a signal again."), nl,
   write("You smack your phone against your hand as the screen doesn't turn on in response to the power button."), nl,
@@ -312,7 +298,7 @@ call :-
   
 % s007b -> s009
 call_for_help :-
-  change_scene(s007b, s009),
+  change_scene(s007b, s015),
   nl,
   write("You need to call an ambulance, or your brother, or someone. This night is quickly unfolding into madness."), nl,
   nl,
