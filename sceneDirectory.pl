@@ -1,3 +1,4 @@
+%http://wiki.ubc.ca/Course:CPSC312-2017-Choose_Your_Adventure
 % directory for matching scene IDs to their function call
 prop(s001, scene, game_start).
 prop(s001, scene, search_car).

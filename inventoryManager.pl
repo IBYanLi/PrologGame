@@ -4,6 +4,7 @@
 items([]).
 
 %check if a certain item is in inventory
+%http://wiki.ubc.ca/Course:CPSC312-2017-Choose_Your_Adventure
 
 checkInv(X, [X]).
 checkInv(X, [X|_]).

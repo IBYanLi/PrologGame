@@ -2,6 +2,7 @@
 :- consult(sceneDirectory).
 :- consult(inventoryManager).
 
+%http://wiki.ubc.ca/Course:CPSC312-2017-Choose_Your_Adventure
 % Type game_start to begin your adventure!
 % Answer scenarios by typing the word in lowercase.
 

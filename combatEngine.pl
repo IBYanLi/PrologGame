@@ -1,6 +1,6 @@
 % flexible combat engine for encounters.
 % currently starts with 'encounter.' call
-
+%http://wiki.ubc.ca/Course:CPSC312-2017-Choose_Your_Adventure
 :- dynamic
 	inCombat,
 	playerHealth/1,
