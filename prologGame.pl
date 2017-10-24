@@ -98,7 +98,7 @@ game_start :-
   nl,
   write("It is getting late and snow is falling lightly. What do you do?"), nl,
   write("A: leave."),nl, % s002
-  write("B: get_in(the car)."),nl, % s003
+  write("B: get_in. (return to the car)" ),nl, % s003
   fail.
 
 % restarts for both gameover and non-gameover state
@@ -118,9 +118,10 @@ restart :-
   asserta(scene(s001)),
   game_start.
 
-% s001 -> s002
+% s001, s003, s013 -> s002
 leave :-
-  change_scene(s001, s002),
+  scene(N), member(N, [s001, s003, s013]), % multiple entry
+  change_scene(N, s002),
   nl,
   write("You choose to leave the car, and walk through the forest towards your cousin's house"), nl, 
   nl,
@@ -149,7 +150,7 @@ run_away :-
   write("B: call. (and try your cell phone again)"), nl, % s009
   fail.
 
-% s002 -> s010
+% s006 -> s010
 proceed :-
   change_scene(s006, s010),
   nl,
@@ -308,16 +309,22 @@ get_in :-
   write("The temperature is dropping steadily, and your car doesn't want to start."), nl, 
   nl,
   write("You feel that you may get sick if you stay in the car."), nl,
-  write("You decided to:"), nl,
   nl,
-  write("A: sleep."), nl, % s004
+  write("You decide to:"), nl,
+  write("A: fall_asleep."), nl, % s004
   write("B: leave."), nl, % s005
-  write("C: search_car."), nl, %s013
+  write("C: wait. (maybe the storm will settle)"), nl,
+  write("D: search_car."), nl, %s013
   fail.
 
 % s003 -> s004
 sleep :- 
   change_scene(s003, s004),
+
+% s003, s013 -> s004
+fall_asleep :- 
+  scene(N), member(N, [s003, s013]), % multiple entry
+  change_scene(N, s004),
   nl,
   write("You never wake up."), nl, 
   nl,
@@ -326,16 +333,26 @@ sleep :-
   asserta(gameover),
   fail.
 
-% s003 -> s005
-leave :-
-  change_scene(s003, s005).
+% s003, s013 -> s005
+wait :- % later
+  scene(N), member(N, [s003, s013]), % multiple entry
+  change_scene(N, s005),
+  write("You decide to wait out the storm. Maybe the wind will settle down and you can make the trek on foot."), nl,
+  write("NOT DONE"), nl,
+  fail.
 
-  % something like this: https://www.thehomesecuritysuperstore.com/self-defense-self-defense-batons-flashlight-batons-sub=212
+% s003 -> s013
 search_car:-
-  change_scene(s003, s001),
+  change_scene(s003, s013),
   asserta(flashlight), nl,
   write("You search your car and picked up the flashlight baton you bought a few months ago."), nl,
+    % something like this: https://www.thehomesecuritysuperstore.com/self-defense-self-defense-batons-flashlight-batons-sub=212
   write("This will surely help in the dark."), nl,
   nl,
-  write("You decide to leave the car."), nl,
-  leave.
+  write("You look outside at the snow whipping around in the wind. It isn't getting any warmer."), nl,
+  nl,
+  write("You sit for a second, and decide that you should: "), nl,
+  write("A: fall_asleep."), nl, % s004
+  write("B: leave."), nl, % s002
+  write("C: wait."), nl, %s005
+  fail. % s005
