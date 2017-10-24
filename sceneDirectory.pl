@@ -10,6 +10,7 @@ prop(c007, scene, encounter).
 prop(s007b, scene, end_investigate).
 prop(s008, scene, proceed).
 prop(s009, scene, call).
+prop(s001, scene, search_car).
 
 % directory for getting from one scene to another
 prop(s001, goto, s002).
@@ -22,3 +23,4 @@ prop(s006, goto, s009).
 prop(s007a, goto, c007).
 prop(c007, goto, s007b).
 prop(s007b, goto, s009).
+prop(s003, goto, s001).
