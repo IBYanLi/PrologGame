@@ -96,9 +96,9 @@ game_start :-
   write("Unfortunately, your car has broken down in the middle of the road."), nl,
   write("With no one around you and no signal on your phone, you decide to leave your car."),nl,
   nl,
-  write("It is getting late and snow is falling lightly. Do you stay in your car?"), nl,
+  write("It is getting late and snow is falling lightly. What do you do?"), nl,
   write("A: leave."),nl, % s002
-  write("B: stay."),nl, % s003
+  write("B: get_in(the car)."),nl, % s003
   fail.
 
 % restarts for both gameover and non-gameover state
@@ -161,7 +161,8 @@ proceed :-
   write("The driver rolls down the windows, and the man inside introduces himself."), nl, nl,
   write("'Hey, my name is Kemper. Do you need a ride?'"), nl,
   write("A: yes_to_ride."), nl, %s011
-  write("B: no_to_ride."), nl.
+  write("B: no_to_ride."), nl, %s012
+  fail.
 
 % s002 -> s007a
 investigate :-
@@ -218,16 +219,17 @@ call_for_help :-
   fail.
 
 % s001 -> s003
-stay :- 
+get_in :- 
   change_scene(s001, s003),
   nl,
   write("The temperature is dropping steadily, and your car doesn't want to start."), nl, 
   nl,
   write("You feel that you may get sick if you stay in the car."), nl,
-  write("Eventually you:"), nl,
+  write("You decided to:"), nl,
   nl,
   write("A: fall_asleep."), nl, % s004
   write("B: leave."), nl, % s005
+  write("C: search_car."), nl, %s013
   fail.
 
 % s003 -> s004
@@ -245,3 +247,12 @@ fall_asleep :-
 leave :-
   change_scene(s003, s005).
 
+  % something like this: https://www.thehomesecuritysuperstore.com/self-defense-self-defense-batons-flashlight-batons-sub=212
+search_car:-
+  change_scene(s003, s001),
+  asserta(flashlight), nl,
+  write("You search your car and picked up the flashlight baton you bought a few months ago."), nl,
+  write("This will surely help in the dark."), nl,
+  nl,
+  write("You decide to leave the car."), nl,
+  leave.
