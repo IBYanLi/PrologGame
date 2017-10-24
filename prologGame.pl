@@ -154,16 +154,83 @@ proceed :-
   change_scene(s006, s010),
   nl,
   write("You continue walking up the mountain, considering the choices that led you to this predicament."), nl,
-  write("The coldness has picked up as the night grows darker. You follow the road, hoping that"), nl,
+  write("The temperatures drop as the night grows darker. You follow the road, hoping that"), nl,
   write("someone might drive by and pick up a hitchiker in need."), nl, nl,
   write("After half an hour trudging up the cold and dark mountain, you see headlights in the distance."), nl,
-  write("You frantically wave your arms like a man possessed, and the car alights beside you."), nl,
+  write("You frantically wave your arms like a man possessed, and the car stops beside you."), nl,
   write("The driver rolls down the windows, and the man inside introduces himself."), nl, nl,
-  write("'Hey, my name is Kemper. Do you need a ride?'"), nl,
-  write("A: yes_to_ride."), nl, %s011
-  write("B: no_to_ride."), nl, %s012
+  write("'Hey, my name is Jeffrey. Do you need a ride?'"), nl,
+  write("A: sure."), nl, %s011
+  write("B: nah."), nl, %s012
   fail.
 
+% s0010 -> s011
+sure :-
+  change_scene(s010, s011),
+  nl,
+  write("'Wow, thanks Bud!' You can't believe your luck. You enter the man's car."), nl,
+  write("'You know, my car had broken down and I was worried about how I would get to my cousin's without"), nl,
+  write("freezing to death first.' You turn to smile at the man."), nl, nl,
+  write("He turns to look back at you and smiles. You quickly explain where you're trying to go and he nods."), nl,
+  write("As the car continues along the road, you feel that the area he is driving to doesn't seem like your cousin's."), nl,
+  write("You decide to:"), nl, nl,
+  write("A: correct_him. (You rather he drive you all the way.)"), nl, %s013
+  write("B: leave_car. (You may as well go the rest of the way yourself.)"), nl, %s014
+  fail.  
+
+% s0011 -> s013
+correct_him :-
+  change_scene(s011, s013),
+  nl,
+  write("You timidly broach the issue."), nl,
+  write("'Hey man, it seems that you are going in the wrong direction...?"), nl,
+  write("The man grins back at you widely. 'Don't worry. I've driven many people to this place before'."), nl, nl,
+  write("You look back at him with uncertainty, and he continues to smile at you."), nl,
+  write("'I know my way around here.' He reassures you."), nl,
+  write("You finally drop the subject and decide to trust his sense of direction."), nl, 
+  write("Looking for a subject of conversation, you ask, 'So, what's your full name?'"), nl, 
+  write("He stares ahead at the road and replies, 'Jeffrey Dahmer. You can just call me Jeff.'"), nl, 
+  write("'Nice, nice. Thanks again for the ride, Jeff.'"), nl, 
+  write("The two of you continued along the road towards the darkness."), nl,
+  write("You were never seen at your cousins house that night, nor anywhere else again."), nl,
+  write("Game Over."), nl,
+  nl,
+  asserta(gameover),
+  fail.
+  
+% s0011 -> s014
+leave_car :-
+  change_scene(s011, s014),
+  nl,
+  write("Feeling a nagging feeling of doubt towards Jeffrey, you make an escuse that"), nl,
+  write("you need to leave the car to relieve yourself. Once he stops the car, you walk towards the bushes"), nl,
+  write("and continue into the woods until you can't be seen. Then you start looking for a path to your cousins house."), nl, nl,
+  write("Despite Jeffery making the wrong turn, you were much closer to your cousin's place than before you got in the car."), nl,
+  write("After an hour of walking, you could finally make out the lights shining in red and green in the dark. "), nl,
+  write("Tired and hungry, but with a new spring in your step, you rush towards the light."), nl, nl,
+  write("Congratuations, you survived!"), nl,
+  nl,
+  fail.
+ 
+  % s0010 -> s012
+nah :-
+  change_scene(s010, s012),
+  nl,
+  write("You reject the man's offer, not trusting others to help you."), nl,
+  write("After all, you are fully capable of getting yourself out of these predicaments."), nl,
+  write("Unfortunately... you get more and more lost in the dark woods and the snow just keeps"), nl,
+  write("piling on thicker and thicker. You notice your toes are frozen purple."), nl,
+  write("You continue on."), nl,
+  write("You are sure you will make it."), nl, 
+  write("You keep walking through the snow."), nl, 
+  write("You can't feel your fingers anymore."), nl, 
+  write("How much farther do you need to go?"), nl, 
+  write("You collapse."), nl,
+  write("Game Over."), nl,
+  nl,
+  asserta(gameover),
+  fail.
+  
 % s002 -> s007a
 investigate :-
   change_scene(s002, s007a),
@@ -181,10 +248,26 @@ end_investigate :-
   write("You sit up against the median for a minute, catching your breath."), nl,
   nl,
   write("It seems you have a few options for what to do next."), nl,
-  write("A: call_for_help."), nl,
-  write("B: rest."), nl,
+  write("You are still a ways away from your cousin's place, and you are exhausted and beaten down."), nl,
+  write("A: call_for_help."), nl, %s009
+  write("B: continue_walking."), nl, %s010
   fail.
 
+% s007b -> s010
+continue_walking :-
+  change_scene(s007b, s010),
+  nl,
+  write("You continue walking up the mountain, considering the choices that led you to this predicament."), nl,
+  write("The temperatures drop as the night grows darker. You follow the road, hoping that"), nl,
+  write("someone might drive by and pick up a hitchiker in need."), nl, nl,
+  write("After half an hour trudging up the cold and dark mountain, you see headlights in the distance."), nl,
+  write("You frantically wave your arms like a man possessed, and the car stops beside you."), nl,
+  write("The driver rolls down the windows, and the man inside introduces himself."), nl, nl,
+  write("'Hey, my name is Jeffrey. Do you need a ride?'"), nl,
+  write("A: sure."), nl, %s011
+  write("B: nah."), nl, %s012
+  fail.
+  
 % s006 -> s009
 call :-
   change_scene(s006, s009),
@@ -227,13 +310,13 @@ get_in :-
   write("You feel that you may get sick if you stay in the car."), nl,
   write("You decided to:"), nl,
   nl,
-  write("A: fall_asleep."), nl, % s004
+  write("A: sleep."), nl, % s004
   write("B: leave."), nl, % s005
   write("C: search_car."), nl, %s013
   fail.
 
 % s003 -> s004
-fall_asleep :- 
+sleep :- 
   change_scene(s003, s004),
   nl,
   write("You never wake up."), nl, 
