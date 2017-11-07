@@ -8,8 +8,8 @@ http://www.amzi.com/AdventureInProlog/appendix.php
 
 Team Members:
 
-Derek Tam (z6h0b, 38645123)
+Derek Tam
 
-Vincent Tan (g0l0b, 20090156)
+Vincent Tan
 
-Yan Li (u4x8, 46926119)
+Yan Li
